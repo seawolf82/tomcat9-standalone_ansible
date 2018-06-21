@@ -1,0 +1,30 @@
+
+- name: Stopping tomcat9 service
+  systemd: state=stopped name=tomcat9
+  ignore_errors: True
+
+- name: Remove tomcat directory
+  file: path="{{tomcat_install_path}}"/"{{tomcat_final}}" state=absent
+
+
+- name: Remove symlink tomcat directory
+  file: path="{{tomcat_dir}}" state=absent
+
+  #- name: Remove tomcat service into init.d directory
+  #file: path=/etc/init.d/tomcat9 state=absent
+
+- name: Remove tomcat service into systemd and reloading daemon
+  file: path=/usr/lib/systemd/system/tomcat9.service state=absent
+  notify: systemd reload 
+
+- name: Remove the user 'tomcat'
+  user:
+    name: tomcat
+    state: absent
+    remove: yes
+
+
+- name: Remove the group 'tomcat'
+  group:
+    name: tomcat
+    state: absent

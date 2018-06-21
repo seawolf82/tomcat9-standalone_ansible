@@ -1,0 +1,67 @@
+---
+
+#- name: Install openjdk "10"
+#  dnf: name=java-openjdk.x86_64 state=present
+
+#- name: Install openjdk "10" devel
+#  dnf: name=java-openjdk-devel.x86_64 state=present
+
+- name: add group "tomcat"
+  group: name=tomcat
+
+- name: add user "tomcat"
+  user: name=tomcat group=tomcat home={{ tomcat_dir }} createhome=no
+
+- name: Download Tomcat version
+  get_url: url=http://mirror.nohup.it/apache/tomcat/{{ tomcat_branch }}/v{{ tomcat_version }}/bin/{{ tomcat_package }} dest={{ tomcat_install_path }}/{{ tomcat_package }}
+
+- name: Extract archive
+  command: chdir=/usr/share /bin/tar xvf {{ tomcat_install_path }}/{{ tomcat_package }} -C /opt/ creates={{ tomcat_install_path }}/{{tomcat_final}}
+
+
+- name: Remove package tar.gz
+  file: path={{ tomcat_install_path }}/{{ tomcat_package }}
+  state: absent
+
+- name: Symlink install directory
+  file: src={{ tomcat_install_path }}/{{ tomcat_final }} path={{ tomcat_dir }} state=link
+
+- name: Change Ownership of Tomcat installation
+  file: path={{ tomcat_dir }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+
+- name: Configure Tomcat server
+  template: src=server.xml dest={{ tomcat_dir }}/conf
+  notify: restart tomcat
+
+- name: Configure Tomcat user
+  template: src=tomcat-users.xml dest={{ tomcat_dir }}/conf
+  notify: restart tomcat
+
+- name: Configure Tomcat manager console
+  template: src=context.xml dest={{ tomcat_dir }}/webapps/manager/META-INF
+  notify: restart tomcat
+
+  #- name: Copy Tomcat script into init.d directory
+  #copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat9 mode=0755
+
+  #- name: Enabled Tomcat at boot and start
+  #service: name=tomcat9 enabled=yes state=started
+
+- name: Copy tomcat service into systemd
+  template:
+    src: tomcat.service.j2
+    dest: /usr/lib/systemd/system/tomcat.service
+
+- name: systemd daemon reload
+  systemd: daemon_reload=yes
+
+- name: Enable tomcat at boot and start
+  systemd:
+    name: tomcat.service
+    state: started
+    enabled: True
+
+
+
+
+
