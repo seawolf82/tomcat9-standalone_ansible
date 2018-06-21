@@ -1,6 +1,6 @@
 # tomcat9-standalone_ansible
 
-This ansible script install on remote machine The Tomcat application server 9
+This ansible script install on remote machine The Tomcat application server 9 and enabling management console to manage it
 
 N.B.
 
