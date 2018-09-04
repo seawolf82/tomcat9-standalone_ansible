@@ -15,3 +15,18 @@ ansible-playbook -vv -i hosts site.yaml
 To uninstall tomcat run:
 
 ansible-playbook -vv -i hosts deprovision.yaml
+
+Adding Tags to permit run only specific task of playbook
+
+Tags:
+
+upgrade
+package
+selinux
+ntp
+tomcat
+epel
+
+For example, to launch only task regarding upgrade os, run:
+ 
+ansible-playbook -vv --tags "upgrade" -i hosts site.yaml
