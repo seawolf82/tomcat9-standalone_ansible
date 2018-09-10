@@ -51,6 +51,15 @@
   notify: restart tomcat
   tags: tomcat
 
+
+- name: Adding port 8080/tcp for tomcat
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+  notify: Reloading firewalld rules
+  tags: tomcat
+
   #- name: Copy Tomcat script into init.d directory
   #copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat9 mode=0755
 

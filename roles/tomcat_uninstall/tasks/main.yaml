@@ -34,3 +34,12 @@
     name: tomcat
     state: absent
   tags: tomcat
+
+
+- name: Removing port 8080/tcp for Tomcat
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: disabled
+  notify: Reloading firewalld rules
+  tags: tomcat
