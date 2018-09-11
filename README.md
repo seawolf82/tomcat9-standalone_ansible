@@ -6,7 +6,7 @@ N.B.
 
 Oracle Jdk it is not installed.  The user will have to install it through rpm package or tar.gz and afterwards setting JAVA_HOME
 
-However this ansible is tested with Oracle jdk 10.1
+However this ansible is tested with Oracle jdk 10.2
 
 To install tomcat run:
 

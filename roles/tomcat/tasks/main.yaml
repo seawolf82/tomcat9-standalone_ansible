@@ -56,7 +56,8 @@
   firewalld:
     port: 8080/tcp
     permanent: true
-    state: enabled
+    immediate: true
+    state: enabled 
   notify: Reloading firewalld rules
   tags: tomcat
 
