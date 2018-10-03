@@ -5,7 +5,7 @@
   tags: tomcat
 
 - name: Remove tomcat directory
-  file: path="{{tomcat_install_path}}"/"{{tomcat_final}}" state=absent
+  file: path="{{tomcat_install_path}}/{{tomcat_final}}" state=absent
   tags: tomcat
 
 
@@ -13,8 +13,6 @@
   file: path="{{tomcat_dir}}" state=absent
   tags: tomcat
 
-  #- name: Remove tomcat service into init.d directory
-  #file: path=/etc/init.d/tomcat9 state=absent
 
 - name: Remove tomcat service into systemd and reloading daemon
   file: path=/usr/lib/systemd/system/tomcat.service state=absent
