@@ -1,10 +1,24 @@
 ---
 
-#- name: Install openjdk "10"
-#  dnf: name=java-openjdk.x86_64 state=present
+#almalinux8 - almalinux9
+#java-17-openjdk
 
-#- name: Install openjdk "10" devel
-#  dnf: name=java-openjdk-devel.x86_64 state=present
+#centos7
+#java-latest-openjdk
+
+- name: Install openjdk18 on Centos7
+  package:
+    name: java-latest-openjdk
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7"
+  tags: tomcat
+
+- name: Install openjdk17 
+  package:
+    name: java-17-openjdk
+    state: present
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "8") or (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+  tags: tomcat
 
 - name: add group "tomcat"
   group: name=tomcat
@@ -15,7 +29,7 @@
   tags: tomcat
 
 - name: Download Tomcat version
-  get_url: url=http://mirror.nohup.it/apache/tomcat/{{ tomcat_branch }}/v{{ tomcat_version }}/bin/{{ tomcat_package }} dest={{ tomcat_install_path }}/{{ tomcat_package }}
+  get_url: url=https://dlcdn.apache.org/tomcat/{{ tomcat_branch }}/v{{ tomcat_version }}/bin/{{ tomcat_package }} dest={{ tomcat_install_path }}/{{ tomcat_package }}
   tags: tomcat
 
 - name: Extract archive
@@ -54,12 +68,6 @@
     state: enabled 
   notify: Reloading firewalld rules
   tags: tomcat
-
-  #- name: Copy Tomcat script into init.d directory
-  #copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat9 mode=0755
-
-  #- name: Enabled Tomcat at boot and start
-  #service: name=tomcat9 enabled=yes state=started
 
 - name: Copy tomcat service into systemd
   template:

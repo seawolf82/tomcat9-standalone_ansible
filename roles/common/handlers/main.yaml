@@ -1,4 +1,5 @@
 ---
+
 - name: Reloading firewalld rules
   command: firewall-cmd --reload
 

@@ -2,11 +2,8 @@
 
 This ansible script install on remote machine The Tomcat application server 9 and enabling management console to manage it
 
-N.B.
-
-Oracle Jdk it is not installed.  The user will have to install it through rpm package or tar.gz and afterwards setting JAVA_HOME
-
-However this ansible is tested with Oracle jdk 10.2
+Tested with openjdk17 on Almalinux8-9 RockyLinux8-9
+Tested with openjdk18 on Centos7
 
 To install tomcat run:
 
@@ -25,7 +22,6 @@ package
 selinux
 ntp
 tomcat
-epel
 
 For example, to launch only task regarding upgrade os, run:
  

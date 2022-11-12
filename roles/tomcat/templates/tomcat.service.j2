@@ -6,15 +6,16 @@ After=syslog.target network.target
 [Service]
 Type=forking
 
-Environment=JAVA_HOME=/usr/java/jdk-10.0.2
+Environment=JAVA_HOME=/usr/lib/jvm/jre
 Environment=CATALINA_PID={{tomcat_install_path}}/{{tomcat_final}}/temp/tomcat.pid
 Environment=CATALINA_HOME={{tomcat_install_path}}/{{tomcat_final}}
 Environment=CATALINA_BASE={{tomcat_install_path}}/{{tomcat_final}}
 Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
 Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
 
-ExecStart={{tomcat_install_path}}/{{tomcat_final}}/bin/startup.sh
-ExecStop=/bin/kill -15 $MAINPID
+ExecStart={{tomcat_install_path}}/{{tomcat_final}}/bin/catalina.sh start
+#ExecStop=/bin/kill -15 $MAINPID
+ExecStop={{tomcat_install_path}}/{{tomcat_final}}/bin/catalina.sh stop
 
 User=tomcat
 Group=tomcat
