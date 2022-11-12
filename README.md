@@ -3,6 +3,7 @@
 This ansible script install on remote machine The Tomcat application server 9 and enabling management console to manage it
 
 Tested with openjdk17 on Almalinux8-9 RockyLinux8-9
+
 Tested with openjdk18 on Centos7
 
 To install tomcat run:
